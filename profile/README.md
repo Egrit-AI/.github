@@ -18,6 +18,18 @@ for a grade.
 Egrit never holds your workloads, prompts, data, models, results or
 credentials.
 
+## Working in a regulated organisation
+
+In a bank, an insurer, a health service or another regulated organisation,
+finding capacity is only half the job: your risk and procurement teams have
+to accept a provider before you can use it. Egrit shows where each service
+runs and what is on record about it, with the source and date of every
+statement, so you can see early which options are worth taking to them, and
+give them the reasons.
+
+Egrit does not decide whether a provider suits your organisation. Your own
+teams do.
+
 ## Status
 
 Early development. Search is not open yet. To hear when it is, get early
