@@ -4,19 +4,19 @@ Egrit helps you find GPU cloud, NeoCloud and managed inference capacity that
 fits what you need, and shows the evidence behind every answer.
 
 ```mermaid
-%%{init: {"theme": "base", "themeVariables": {"fontSize": "20px", "fontFamily": "Inter, Helvetica, Arial, sans-serif", "lineColor": "#2b7fff"}}}%%
+%%{init: {"theme": "base", "themeVariables": {"fontSize": "20px", "fontFamily": "Inter, Helvetica, Arial, sans-serif", "lineColor": "#096FFE"}}}%%
 flowchart LR
     R["<b>Your requirement</b><br/>64 H200s, EU, 30 days"]:::ask --> E(["<b>Egrit</b><br/>checks every provider,<br/>service and region"]):::egrit
     E --> Y["<b>yes, it fits</b><br/>with its source and date"]:::yes
     E --> N["<b>no, it does not</b><br/>with its source and date"]:::no
     E --> U["<b>unknown</b><br/>nothing on record yet"]:::unknown
 
-    classDef ask fill:#c9d1e3,stroke:#0f1b3d,stroke-width:2px,color:#0f1b3d,font-size:20px
-    classDef egrit fill:#0f1b3d,stroke:#2b7fff,stroke-width:3px,color:#ffffff,font-size:22px
-    classDef yes fill:#1a7f4b,stroke:#0f1b3d,stroke-width:2px,color:#ffffff,font-size:20px
-    classDef no fill:#3b4a6b,stroke:#0f1b3d,stroke-width:2px,color:#ffffff,font-size:20px
-    classDef unknown fill:#e8a317,stroke:#0f1b3d,stroke-width:2px,color:#0f1b3d,font-size:20px
-    linkStyle default stroke:#2b7fff,stroke-width:3px
+    classDef ask fill:#FFFFFF,stroke:#061835,stroke-width:2px,color:#061835,font-size:20px
+    classDef egrit fill:#061835,stroke:#096FFE,stroke-width:4px,color:#FFFFFF,font-size:22px
+    classDef yes fill:#096FFE,stroke:#061835,stroke-width:2px,color:#FFFFFF,font-size:20px
+    classDef no fill:#CFE2FF,stroke:#061835,stroke-width:2px,color:#061835,font-size:20px
+    classDef unknown fill:#FFFFFF,stroke:#096FFE,stroke-width:2px,stroke-dasharray:6 4,color:#061835,font-size:20px
+    linkStyle default stroke:#096FFE,stroke-width:3px
 ```
 
 For each provider and region, Egrit compiles what is on public record, from
