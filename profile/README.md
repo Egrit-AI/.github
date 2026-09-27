@@ -1,5 +1,3 @@
-# Egrit
-
 **Find compute you can actually use.**
 
 Egrit helps you find GPU cloud, NeoCloud and managed inference capacity that
