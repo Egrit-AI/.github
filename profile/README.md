@@ -3,6 +3,14 @@
 Egrit helps you find GPU cloud, NeoCloud and managed inference capacity that
 fits what you need, and shows the evidence behind every answer.
 
+```mermaid
+flowchart LR
+    A["Your requirement<br/><i>64 H200s in the EU for 30 days</i>"] --> B(["Egrit"])
+    B --> C["Every provider, service<br/>and region that fits"]
+    C --> D["Each part answered<br/><b>yes</b>, <b>no</b> or <b>unknown</b>"]
+    D --> E["With the source and date<br/>behind every answer"]
+```
+
 For each provider and region, Egrit compiles what is on public record, from
 the provider's own documentation and from independent sources, and keeps it
 current. Every statement carries its source, the date it was read and a grade
