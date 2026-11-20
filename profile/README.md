@@ -2,78 +2,81 @@
 
 # Egrit
 
-Last updated: 2026-10-31
+Last updated: 2026-11-20
 
-**Find compute you can actually use. Build a clearer path from cloud to device.**
+**Check ARM64 containers for NVIDIA Jetson before you reach the device.**
 
-Egrit is a family of developer tools from Neul Space Ltd. Start with Search
-through the existing Egrit MCP to find GPU and AI compute against your
-requirements. Keep the working context in Plan. For Jetson development,
-run Preflight locally and use its report to identify what still needs
-checking before physical device validation.
+[Egrit-Preflight](https://github.com/Egrit-AI/egrit-preflight) is a free,
+open-source command line tool. On an ordinary Linux or macOS computer it
+tells you whether you can run `linux/arm64` containers, what an image
+declares about its architecture and Jetson dependencies, and whether a small
+CPU-only ARM64 smoke test runs. It uses the Docker, Buildx and QEMU you
+already have. It is not an emulator and does not install Docker, QEMU or other system dependencies.
 
-[Connect Egrit MCP](https://github.com/Egrit-AI/egrit-search/blob/main/docs/mcp.md)
+[Get Preflight](https://github.com/Egrit-AI/egrit-preflight)
+ · [Where it fits](https://github.com/Egrit-AI/egrit-preflight/blob/main/docs/where-it-fits.md)
+ · [What it cannot verify](https://github.com/Egrit-AI/egrit-preflight/blob/main/docs/limitations.md)
  · [Explore Search](https://github.com/Egrit-AI/egrit-search)
- · [Run Preflight locally](https://github.com/Egrit-AI/egrit-preflight)
+ · [Connect Egrit MCP](https://github.com/Egrit-AI/egrit-search/blob/main/docs/mcp.md)
  · [Website](https://www.egrit.ai)
 
-## Start with the existing MCP
+## Try it
 
-Ask your connected assistant: "Find compute for my requirements and show
-which requirements each result meets, with the reasons and missing information."
-
-Use the [connection guide](https://github.com/Egrit-AI/egrit-search/blob/main/docs/mcp.md)
-for the hosted endpoint or local stdio setup. Access depends on the service
-and your client. Check the tools your connection exposes: a roadmap item is
-not an installed tool. Hosted MCP cannot access your local Docker or Jetson.
-
-## What each tool does
-
-| Part | Purpose | Availability boundary |
-|---|---|---|
-| Search and DeepDive | Find compute and inspect the supporting technical information | Existing MCP/API capabilities; deployment and connection determine the tools exposed |
-| Plan | Keep requirements, search results and explicitly attached reports together | Local report attachment is implemented; the joined hosted report journey is in development |
-| Preflight | Inspect ARM64 images and run bounded CPU-only checks locally | Free, open-source CLI; target preparation and report explanation through MCP are in development |
-| Elevator | Carry the image and target context towards physical device checks | Local report intake exists; device validation and deployment have separate gates |
-
-## A developer journey
-
-The diagram shows the intended joined journey. It does not mean every step
-is available through MCP today.
-
-```mermaid
-flowchart TD
-    A["Describe requirements in Egrit MCP"] --> B["Search and keep context in Plan"]
-    B --> C["Review a sourced Jetson target"]
-    C --> D["Run Preflight locally"]
-    D --> E{"What does the report show?"}
-    E -->|Missing inputs or failed checks| C
-    E -->|Device checks still required| F["Continue with Elevator device validation"]
+```sh
+egrit-preflight doctor                          # can this machine run linux/arm64 containers?
+egrit-preflight image --image IMAGE_REF         # inspect an image; nothing is pulled or run
+egrit-preflight smoke --image IMAGE_REF --pull --yes
+egrit-preflight report --image IMAGE_REF --smoke --pull --yes -o report.json
 ```
 
-For an Orin Nano project, first establish the installed or intended JetPack
-release. Use a sourced [target example](https://github.com/Egrit-AI/egrit-preflight/tree/main/examples/targets)
-and a digest-pinned image. Run Preflight with that target, review the report,
-then attach it to a local Plan. The proposed MCP preparation and explanation
-tools will help with these steps once released.
+Use an immutable image reference, with the digest beside the tag. Install
+instructions are in the
+[repository README](https://github.com/Egrit-AI/egrit-preflight#install).
 
-A report can be accepted while its checks fail. Missing facts remain
-unresolved. An ARM64 CPU pass is not a Jetson GPU pass, and no report import
-establishes CUDA, TensorRT, power or flight performance. A physical device
-is required for those checks.
+## What a result means
 
-## Free local tools and Pro continuity
+| Outcome | Meaning |
+|---|---|
+| `PASS` | Checked and met. The evidence field says whether Preflight observed it or it was declared. |
+| `FAIL` | Checked and not met, or refused, such as an unpinned tag. |
+| `UNKNOWN` | Could not be established. Never treated as a pass. |
+| `REQUIRES_HARDWARE` | Cannot be decided without a physical Jetson. |
 
-Preflight needs no account or subscription. Local Plan report attachment
-and Elevator report intake do not require a Pro account. The Pro direction
-adds account-owned hosted continuity and history; the complete hosted report
-workflow is still in development. This is not a pricing or availability
-promise for managed Elevator deployment.
+A pass here is **not** a Jetson pass. ARM64 emulation does not provide the
+Jetson GPU, the NVIDIA driver, the device nodes or the host CUDA and
+TensorRT libraries. Those checks always need a physical Jetson.
 
-Search keeps provider statements, observations and missing information
-distinct. Egrit does not reserve compute or decide whether your organisation
-may use a provider. Your authorised team makes that decision.
+## Compare against a target
+
+Pass a small JSON target record with `--target` to compare an image with the
+JetPack, CUDA and TensorRT versions you intend to run. The repository holds
+[sourced examples](https://github.com/Egrit-AI/egrit-preflight/tree/main/examples/targets)
+for recent JetPack releases. Each one cites NVIDIA's release page and the
+date it was read, and is a declaration until read from a device.
+
+## Free and open source
+
+Apache-2.0, copyright 2026 Neul Space Ltd. No account, no login, no
+subscription, no usage credits and no telemetry. Functionality released in
+the free edition will not be withdrawn to create paid tiers.
+
+## Beyond Preflight
+
+Preflight stands alone. Egrit also builds related tools that are separate
+and optional:
+
+- [Search](https://github.com/Egrit-AI/egrit-search): find GPU and AI compute
+  against your requirements, through the Egrit MCP.
+- Plan: keep requirements, search results and Preflight reports together.
+- Elevator: carry image and target context towards physical device checks.
+  Device validation and deployment have separate gates.
+
+Availability varies by tool. Check what your connection exposes: a roadmap
+item is not an installed tool.
 
 ## About
 
 Egrit is a product of Neul Space Ltd, registered in England and Wales.
+NVIDIA, Jetson, JetPack, CUDA and TensorRT are trademarks of NVIDIA
+Corporation. Egrit-Preflight is independent and is not an NVIDIA
+certification or a statement by NVIDIA.
